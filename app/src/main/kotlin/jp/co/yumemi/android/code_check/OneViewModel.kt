@@ -12,9 +12,9 @@ import io.ktor.client.engine.android.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import jp.co.yumemi.android.code_check.TopActivity.Companion.lastSearchDate
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import kotlinx.parcelize.Parcelize
 import org.json.JSONObject
 import java.util.*
@@ -30,7 +30,7 @@ class OneViewModel(
     fun searchResults(inputText: String): List<Item> = runBlocking {
         val client = HttpClient(Android)
 
-        return@runBlocking GlobalScope.async {
+        return@runBlocking withContext(Dispatchers.IO) {
             val response: HttpResponse = client.get("https://api.github.com/search/repositories") {
                 header("Accept", "application/vnd.github.v3+json")
                 parameter("q", inputText)
@@ -70,8 +70,8 @@ class OneViewModel(
 
             lastSearchDate = Date()
 
-            return@async items.toList()
-        }.await()
+            return@withContext items.toList()
+        }
     }
 }
 
