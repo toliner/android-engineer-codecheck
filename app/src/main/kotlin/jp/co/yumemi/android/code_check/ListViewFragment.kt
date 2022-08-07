@@ -11,11 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.*
-import jp.co.yumemi.android.code_check.databinding.FragmentOneBinding
+import jp.co.yumemi.android.code_check.databinding.FragmentListBinding
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.map
 
-class ListViewFragment : Fragment(R.layout.fragment_one) {
+class ListViewFragment : Fragment(R.layout.fragment_list) {
 
     private val viewModel by viewModels<ListViewModel> {
         OneViewModelFactory()
@@ -24,7 +24,8 @@ class ListViewFragment : Fragment(R.layout.fragment_one) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val binding = FragmentOneBinding.bind(view)
+
+        val binding = FragmentListBinding.bind(view)
         val layoutManager = LinearLayoutManager(requireContext())
         val dividerItemDecoration =
             DividerItemDecoration(requireContext(), layoutManager.orientation)
