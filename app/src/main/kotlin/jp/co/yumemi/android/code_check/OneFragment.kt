@@ -21,11 +21,11 @@ class OneFragment : Fragment(R.layout.fragment_one) {
 
         val binding = FragmentOneBinding.bind(view)
 
-        val viewModel = OneViewModel(context!!)
+        val viewModel = OneViewModel()
 
-        val layoutManager = LinearLayoutManager(context!!)
+        val layoutManager = LinearLayoutManager(requireContext())
         val dividerItemDecoration =
-            DividerItemDecoration(context!!, layoutManager.orientation)
+            DividerItemDecoration(requireContext(), layoutManager.orientation)
         val adapter = CustomAdapter(object : CustomAdapter.OnItemClickListener {
             override fun itemClick(item: Item) {
                 gotoRepositoryFragment(item)
@@ -36,7 +36,9 @@ class OneFragment : Fragment(R.layout.fragment_one) {
             .setOnEditorActionListener { editText, action, _ ->
                 if (action == EditorInfo.IME_ACTION_SEARCH) {
                     editText.text.toString().let {
-                        viewModel.searchResults(it).apply {
+                        viewModel.searchResults(it).map { item ->
+                            item.copy(language = requireContext().getString(R.string.written_language, item.language))
+                        }.apply {
                             adapter.submitList(this)
                         }
                     }
