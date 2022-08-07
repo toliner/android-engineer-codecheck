@@ -3,6 +3,7 @@
  */
 package jp.co.yumemi.android.code_check
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Date
 
 /**
  * TwoFragment で使う
@@ -32,6 +36,7 @@ class ListViewModel(
     private var searchJob: Job? = null
     fun searchRepository(inputText: String) {
         searchJob?.cancel()
+        Log.d("検索した日時", Date().toString())
         searchJob = viewModelScope.launch {
             val searchResult = repository.searchRepository(inputText)
             _searchResults.update { searchResult }
