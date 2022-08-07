@@ -21,7 +21,7 @@ class OneFragment : Fragment(R.layout.fragment_one) {
 
         val binding = FragmentOneBinding.bind(view)
 
-        val viewModel = OneViewModel(requireContext())
+        val viewModel = OneViewModel()
 
         val layoutManager = LinearLayoutManager(requireContext())
         val dividerItemDecoration =
@@ -36,7 +36,9 @@ class OneFragment : Fragment(R.layout.fragment_one) {
             .setOnEditorActionListener { editText, action, _ ->
                 if (action == EditorInfo.IME_ACTION_SEARCH) {
                     editText.text.toString().let {
-                        viewModel.searchResults(it).apply {
+                        viewModel.searchResults(it).map { item ->
+                            item.copy(language = requireContext().getString(R.string.written_language, item.language))
+                        }.apply {
                             adapter.submitList(this)
                         }
                     }
